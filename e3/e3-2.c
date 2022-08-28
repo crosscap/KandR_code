@@ -32,6 +32,7 @@ void escape(char s[], char t[])
             break;
         }
     }
+    s[j] = '\0';
 }
 
 void reescape(char s[], char t[])
