@@ -5,7 +5,7 @@ int bitsearch(int x, int v[], int n)
     low = 0;
     high = n - 1;
     mid = (low + high) / 2;
-    while (low <= high && )
+    while (low <= high && x != v[mid])
     {
         if (x < v[mid])
             high = mid - 1;
