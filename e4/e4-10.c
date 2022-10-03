@@ -1,8 +1,10 @@
+// ret
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
-#define MAXOP 100
-#define NUMBER '0'
+#define MAXLINE 100         // 操作符或运算符的最大长度
+#define NUMBER '0'          // 标识找到一个数
 
 int getop(char []);
 void push(double);
@@ -10,12 +12,15 @@ double pull(void);
 int getch(void);
 void ungetch(int);
 
+int lim = 0;
+char line[MAXLINE];
+
 int main()
 {
     int type;
     double op2;
-    char s[MAXOP];
-
+    char s[MAXLINE];
+    
     while ((type = getop(s)) != EOF)
     {
         switch (type)
@@ -40,14 +45,6 @@ int main()
                 else
                     printf("error: zero devisor\n");
                 break;
-            case '%':
-                op2 = pop();
-                if (op2 == 0.0)
-                    printf("error: zero devisor\n");
-                else
-                    // push((double)( (int)pop() % (int)op2 ));
-                    push(fmod(pop(), op2));         // fmod计算二者的取余值
-                break;
             case '\n':
                 printf("\t.8g\n", pop());
                 break;
@@ -60,39 +57,30 @@ int main()
     return 0;
 }
 
+/* 获取下一个运算符或数值操作数 */
 int getop(char s[])
 {
     int i, c;
 
-    while ((s[0] = c =getch()) == ' ' || c == '\t')
+    if (line[lim] == '\0')
+        if (getline(line, MAXLINE, '\n') == 0)
+            return EOF;
+        else
+            lim = 0;
+    while ((s[0] = c = line[lim++]) == ' ' || c == '\t')
         ;
     s[1] = '\0';
-    if (!isdigit(c) && c != '.' && c != '-')
+    if (!isdigit(c) && c != '.')        // 不是数
         return c;
     i = 0;
-
-    // 主要改进：判断‘-’是否为负号
-    if (c == '-')
-    {
-        if (isdigit(c = getch()) || c == '.')  // ‘-’是负号
-            s[++i] = c;
-        else                                   // ‘-’是减号
-        {
-            if (c != EOF)
-                ungetch(c);
-            return '-';
-        }
-    }
-
-    if (isdigit(c))
-        while (isdigit(s[++i] = c = getch()))
+    if (isdigit(c))                     // 收集整数部分
+        while (isdigit(s[++i] = c = line[lim++]))
             ;
-    if (c == '.')
-        while (isdigit(s[++i] = c = getch()))
+    if (c == '.')                       // 收集小数部分
+        while (isdigit(s[++i] = c = line[lim++]))
             ;
     s[i] = '\0';
-    if (c != EOF)
-        ungetch(c);
+    lim--;
     
     return NUMBER;
 }

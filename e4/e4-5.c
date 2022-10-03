@@ -1,8 +1,13 @@
+// ret
 #include <stdio.h>
+#include <string.h>
 #include <stdlib.h>
+#include <math.h>
+#include <ctype.h>
 
 #define MAXOP 100
 #define NUMBER '0'
+#define NAME 'n'
 
 int getop(char []);
 void push(double);
@@ -22,6 +27,9 @@ int main()
         {
             case NUMBER:
                 push(atofs(s));
+                break;
+            case NAME:
+                mathfunc(s);
                 break;
             case '+':
                 push(pop() + pop());
@@ -45,8 +53,7 @@ int main()
                 if (op2 == 0.0)
                     printf("error: zero devisor\n");
                 else
-                    // push((double)( (int)pop() % (int)op2 ));
-                    push(fmod(pop(), op2));         // fmod计算二者的取余值
+                    push(fmod(pop(), op2));
                 break;
             case '\n':
                 printf("\t.8g\n", pop());
@@ -60,6 +67,25 @@ int main()
     return 0;
 }
 
+void mathfunc(char s[])
+{
+    double op2;
+
+    if (strcmp(s, "sin") == 0)
+        push(sin(pop()));
+    else if (strcmp(s, "cos") == 0)
+        push(cos(pop()));
+    else if (strcmp(s, "exp") == 0)
+        push(exp(pop()));
+    else if (strcmp(s, "pow") == 0)
+    {
+        op2 = pop();
+        push(pow(pop(), op2));
+    }
+    else
+        printf("error: %s is not supported\n", s);
+}
+
 int getop(char s[])
 {
     int i, c;
@@ -71,7 +97,19 @@ int getop(char s[])
         return c;
     i = 0;
 
-    // 主要改进：判断‘-’是否为负号
+    if (islower(c))
+    {
+        while (islower(s[++i] = c = getch()))
+            ;
+        s[i] = '\0';
+        if (c != EOF)
+            ungetch(c);
+        if (strlen(s) > 1)
+            return NAME;
+        else
+            return c;
+    }
+
     if (c == '-')
     {
         if (isdigit(c = getch()) || c == '.')  // ‘-’是负号
