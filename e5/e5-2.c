@@ -5,9 +5,10 @@ int getch(void);
 void ungetch(int);
 
 // 将输入中的下一个整型数返回给*pn
-int getint(int *pn)
+int ghetfloat(float *pn)
 {
-    int c, d, sign;
+    int c, sign;
+    float power;
 
     while (isspace(c = getch()))
         ;
@@ -18,20 +19,17 @@ int getint(int *pn)
     }
     sign = (c == '-') ? -1 : 1;
     if (c == '+' | c == '-')
-    {
-        d = c;
-        
-        if (!isdigit(c = getch()))
-        {
-            if (c != EOF)
-                ungetch(c);
-            ungetch(d);
-            return d;
-        }
-    }
-        
+        c = getch();
     for (*pn = 0; isdigit(c); c = getch())
-        *pn = 10 * *pn + (c - '0');
+        *pn = 10.0 * *pn + (c - '0');
+    if (c == '.')
+        c = getch();
+    for (power = 1.0; isdigit(c); c = getch())
+    {
+        *pn = 10.0 * *pn + (c - '0');
+        power *= 10.0;
+    }
+    *pn /= power;
     *pn *= sign;
     if (c != EOF)
         ungetch(c);
