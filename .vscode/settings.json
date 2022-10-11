@@ -3,7 +3,10 @@
         "float.h": "c",
         "stdio.h": "c",
         "calc.h": "c",
-        "head.h": "c"
+        "head.h": "c",
+        "ctype.h": "c",
+        "string.h": "c",
+        "struct.h": "c"
     },
     "java.project.sourcePaths": []
 }

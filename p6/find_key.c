@@ -1,6 +1,3 @@
-#include <stdio.h>
-#include <ctype.h>
-#include <string.h>
 #include "struct.h"
 
 #define MAXWORD 100
