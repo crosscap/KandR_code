@@ -11,7 +11,12 @@
         "unistd.h": "c",
         "cstdio": "c",
         "cstdlib": "c",
-        "syscalls.h": "c"
+        "syscalls.h": "c",
+        "file.h": "c",
+        "types.h": "c",
+        "stat.h": "c",
+        "dir.h": "c",
+        "dirent.h": "c"
     },
     "java.project.sourcePaths": []
 }
