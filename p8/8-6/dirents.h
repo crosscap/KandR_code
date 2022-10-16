@@ -1,4 +1,4 @@
-#define NAME_MAX 12
+#define NAME_MAX 14
 
 typedef struct
 {

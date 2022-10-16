@@ -1,4 +1,5 @@
 #include <fcntl.h>
+
 #define PERMS 0666
  
 #define NULL 0
@@ -44,9 +45,3 @@ int fseek(FILE *fp, long offset, int origin);
  
 #define getchar() getc(stdin)
 #define putchar(x) putc((x),stdout)
-
-FILE _iob[OPEN_MAX] = {     //stdin, stdout, stderr:
-    {0, (char *) 0, (char *) 0, _READ, 0},
-    {0, (char *) 0, (char *) 0, _WRITE, 1},
-    {0, (char *) 0, (char *) 0, _WRITE | _UNBUF, 2}
-};
